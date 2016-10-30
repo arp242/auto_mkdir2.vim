@@ -1,0 +1,5 @@
+:MkdirP	auto_mkdir2.txt	/*:MkdirP*
+auto_mkdir2	auto_mkdir2.txt	/*auto_mkdir2*
+auto_mkdir2_commands	auto_mkdir2.txt	/*auto_mkdir2_commands*
+auto_mkdir2_options	auto_mkdir2.txt	/*auto_mkdir2_options*
+g:auto_mkdir2_confirm	auto_mkdir2.txt	/*g:auto_mkdir2_confirm*
