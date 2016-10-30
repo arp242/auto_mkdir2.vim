@@ -1,3 +1,7 @@
+[This plugin at www.vim.org](http://www.vim.org/scripts/script.php?script_id=5474)
+
+-----------------------------------------
+
 Introduction
 ============
 Automatically create direcories that don't exist yet when writing a file.
