@@ -49,7 +49,7 @@ function! s:mkdir_p(path, never_ask) abort
 		return
 	endif
 
-	if g:auto_mkdir2_confirm
+	if !a:never_ask && g:auto_mkdir2_confirm
 		echohl Question
 		echon 'Create directory `' . a:path . "' [y/N]? "
 		echohl None
@@ -72,7 +72,7 @@ unlet s:save_cpo
 
 " The MIT License (MIT)
 "
-" Copyright © 2015-2016 Martin Tournoij
+" Copyright © 2015-2017 Martin Tournoij
 "
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to
