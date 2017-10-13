@@ -27,7 +27,7 @@ command! -nargs=* -complete=dir MkdirP call s:mkdir_p(<q-args>, 1)
 
 augroup auto_mkdir2
 	autocmd!
-	autocmd BufWritePre * call s:mkdir_p(expand("<amatch>:p:h"), 0)
+	autocmd BufWritePre * call s:mkdir_p(expand("<amatch>:p:h"), v:cmdbang)
 augroup end
 
 
