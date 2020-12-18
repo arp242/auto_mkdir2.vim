@@ -22,6 +22,11 @@ OPTIONS                                                  *auto_mkdir2_options*
 
         Ask for confirmation before automatically creating a directory.
 
+*g:auto_mkdir2_allfiles*                (Boolean, default: 1)
+
+        Setting |g:auto_mkdir2_allfiles| to 0 disables automatic directory
+        creation. See |MkdirPC|.
+
 ==============================================================================
 COMMANDS                                                *auto_mkdir2_commands*
 
@@ -33,6 +38,24 @@ directory.
 
 The [directory] is |expand()|-ed. The parameter is optional and [%:h:p] is
 used if it is empty.
+
+MkdirPC [directory]                                                  *:MkdirPC*
+
+Functions identically to MkdirP except that appending a '!' will force the
+creation, regardless of the value of |g:auto_mkdir2_confirm|.
+
+This command is most useful if |g:auto_mkdir2_allfiles| == '0' as MkdirPC can
+then be used in autocmds to turn on automatic directory creation for certain
+files.
+
+The following turns on automatic directory creation only for files with an
+*.md extension: 
+
+let |g:auto_mkdir2_allfiles| = 0
+augroup auto_mkdir2
+    autocmd!
+	autocmd BufWritePre *.md |MkdirPC|
+augroup end
 
 
 vim:tw=78:ts=8:ft=help:norl:expandtab
