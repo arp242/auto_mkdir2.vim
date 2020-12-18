@@ -12,12 +12,25 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-command! -nargs=* -complete=dir MkdirP call s:mkdir_p(<q-args>, 1)
+if !exists('g:auto_mkdir2_allfiles')
+    let g:auto_mkdir2_allfiles = 1
+endif
+if !exists('g:auto_mkdir2_confirm')
+	let g:auto_mkdir2_confirm = 1
+endif
 
-augroup auto_mkdir2
-	autocmd!
-	autocmd BufWritePre * call s:mkdir_p(expand("<amatch>:p:h"), v:cmdbang)
-augroup end
+
+"##########################################################
+" Commands
+command! -nargs=* -complete=dir MkdirP call s:mkdir_p(<q-args>, 1)
+command! -nargs=* -complete=dir MkdirPC call s:mkdir_p(<q-args>, v:cmdbang)
+
+if g:auto_mkdir2_allfiles == "1"
+    augroup auto_mkdir2
+        autocmd!
+        autocmd BufWritePre * call s:mkdir_p(expand("<amatch>:p:h"), v:cmdbang)
+    augroup end
+endif
 
 
 fun! s:mkdir_p(path, never_ask) abort
