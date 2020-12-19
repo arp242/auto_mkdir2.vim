@@ -1,12 +1,10 @@
 " auto_mkdir2.vim: Automatically create directories
 "
-" http://code.arp242.net/auto_mkdir2.vim
+" https://github.com/arp242/auto_mkdir2.vim
 "
 " See the bottom of this file for copyright & license information.
 
 
-"##########################################################
-" Initialize some stuff
 scriptencoding utf-8
 if exists('g:loaded_auto_mkdir2') | finish | endif
 let g:loaded_auto_mkdir2 = 1
@@ -14,15 +12,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-"##########################################################
-" Options
-if !exists('g:auto_mkdir2_confirm')
-	let g:auto_mkdir2_confirm = 1
-endif
-
-
-"##########################################################
-" Commands
 command! -nargs=* -complete=dir MkdirP call s:mkdir_p(<q-args>, 1)
 
 augroup auto_mkdir2
@@ -31,12 +20,9 @@ augroup auto_mkdir2
 augroup end
 
 
-"##########################################################
-" Functions
-
-function! s:mkdir_p(path, never_ask) abort
+fun! s:mkdir_p(path, never_ask) abort
 	let l:dir = expand(a:path)
-	if l:dir == ""
+	if l:dir is# ''
 		let l:dir = expand('%:p:h')
 	endif
 
@@ -45,25 +31,22 @@ function! s:mkdir_p(path, never_ask) abort
 	endif
 
 	if filereadable(l:dir)
-		echoerr '`' . l:dir . "' exists and isn't a directory"
+		echohl Error | echom printf("%s exists and isn't a directory", l:dir) | echohl None
 		return
 	endif
 
-	if !a:never_ask && g:auto_mkdir2_confirm
-		echohl Question
-		echon 'Create directory `' . a:path . "' [y/N]? "
-		echohl None
+	let l:response = 'y'
+	if !a:never_ask && get(g:, 'auto_mkdir2_confirm', 1)
+		echohl Question | echon printf('Create directory "%s" [y/N]? ', a:path) | echohl None
 
 		" TODO: When using :wq or ZZ I need to press <CR> here after y?
 		let response = nr2char(getchar())
-	else
-		let l:response = 'y'
 	endif
 
-    if l:response ==? "y"
+    if l:response is? 'y'
 		call mkdir(iconv(l:dir, &encoding, &termencoding), 'p')
     endif
-endfunction
+endfun
 
 
 let &cpo = s:save_cpo
