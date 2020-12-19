@@ -16,23 +16,60 @@ developed independently. This version has the option to confirm directory
 creation and includes a bugfix for unicode directory names.
 
 ==============================================================================
-OPTIONS                                                  *auto_mkdir2_options*
+FUNCTIONS                                              *auto_mkdir2_functions*
 
-*g:auto_mkdir2_confirm*                 (Boolean, default: 1)
+*auto_mkdir2#mkdir_p* (path, confirm)
 
-        Ask for confirmation before automatically creating a directory.
+        Create the directory [path], and ask for confirmation if [confirm] is
+        not `0`.
+
+*auto_mkdir2#autocmd* ()
+
+        Convenience function for calling `auto_mkdir2#mkdir_p()` from an
+        autocmd.
+
+==============================================================================
+AUTOCMD                                                  *auto_mkdir2_autocmd*
+
+By default this plugin will hook in to a |BufWritePre| |autocmd| to create
+directories that don't exist yet when writing a file.
+
+                                                       *g:auto_mkdir2_autocmd*
+You can use the `g:auto_mkdir2_autocmd` to limit to a more specific set of
+files, for example:
+
+        *.md            Only apply to Markdown files
+        *.md,*.txt      Apply to Markdown and text files
+        /some/dir/*     Only apply to files in /some/dir
+        /dir/*,*.md     Only apply to files in /dir and all Markdown files
+
+Use an empty string to not add any autocmd; you can add your own autocmds
+with: >
+
+        augroup auto_mkdir2
+                au!
+		au BufWritePre * call auto_mkdir2#autocmd()
+        augroup end
+<
+NOTE: changing this setting at runtime doesn't do anything; you'll have to set
+it at startup (i.e. in your vimrc).
 
 ==============================================================================
 COMMANDS                                                *auto_mkdir2_commands*
 
-MkdirP [directory]                                                   *:MkdirP*
+MkdirP[!] [directory]                                                *:MkdirP*
 
-Like `mkdir -p` from the shell: it will create all intermediate directories
-and will not show an error if the [directory] already exists and is a
-directory.
+        Like `mkdir -p` from the shell: it will create all intermediate
+        directories and will not show an error if the [directory] already
+        exists and is a directory.
 
-The [directory] is |expand()|-ed. The parameter is optional and [%:h:p] is
-used if it is empty.
+        The [directory] is |expand()|-ed. The parameter is optional and
+        `%:h:p` is used if it is empty.
+
+                                                        *g:auto_mkdir2_confirm*
+        It will ask for confirmation if `g:auto_mkdir2_confirm` is set
+        (default: 1), and adding `!` will invert the value (so if this is set
+        to `0` then it will ask for confirmation with `!`).
 
 
 vim:tw=78:ts=8:ft=help:norl:expandtab
